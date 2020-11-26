@@ -5,8 +5,8 @@
   "scripts": {
     "test": "jest",
     "test:dev": "npm t -- --watchAll",
-    "build": "tsc --alwaysStrict src/index.ts -outDir ./dist",
-    "start": "node ./dist/index.js"
+    "build": "tsc --sourcemap src/index.ts -outDir ./dist",
+    "start": "node ./dist/index.js < input.txt"
   },
   "repository": {
     "type": "git",
