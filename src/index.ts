@@ -4,7 +4,10 @@ const main = async () => {
   const inputReader = new InputReader();
 
   for await (const bitmap of inputReader.read()) {
-    console.log(bitmap.calculateDistances())
+    for (const line of bitmap.calculateDistances()) {
+      console.log(line.join(' '));
+    }
+    console.log();
   }
 };
 
