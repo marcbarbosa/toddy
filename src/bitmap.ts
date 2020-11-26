@@ -1,9 +1,5 @@
 import Pixel from "./pixel";
-
-interface Control {
-  accumulator: number;
-  visited: Set<number>;
-}
+import Output from "./output";
 
 class Bitmap {
   private rows: number;
@@ -42,45 +38,46 @@ class Bitmap {
     return neighbors;
   }
 
-  private nearestWhiteRecursive(pixels: Pixel[], control: Control): number {
-    let unvisitedNeighbors: Pixel[] = [];
-    const uniqueNeighbors: Set<number> = new Set();
-
-    for (const p of pixels) {
-      if (p.value) return control.accumulator;
-      control.visited.add(p.id());
-
-      this.getNeighbors(p).forEach(p => {
-        if (!control.visited.has(p.id()) && !uniqueNeighbors.has(p.id())) {
-          unvisitedNeighbors.push(p);
-          uniqueNeighbors.add(p.id());
-        }
-      });
-    };
-
-    control.accumulator++;
-
-    return this.nearestWhiteRecursive(unvisitedNeighbors, control);
-  }
-
-  private nearestWhite(p: Pixel): number {
+  private findNearestWhite(p: Pixel): number {
     if (p.value) return 0;
+
+    let accumulator = 1;
     const visited: Set<number> = new Set([p.id()]);
-    return this.nearestWhiteRecursive(this.getNeighbors(p), { accumulator: 1, visited });
+
+    let neighbors = this.getNeighbors(p);
+
+    while (true) {
+      if (neighbors.find(p => p.value)) return accumulator;
+
+      const alreadyAdded = new Set<number>();
+      neighbors = neighbors.reduce((acc: Pixel[], p) => {
+        const nextNeighbors = this.getNeighbors(p);
+        for (const p of nextNeighbors) {
+          if (!visited.has(p.id()) && !alreadyAdded.has(p.id())) {
+            acc.push(p);
+            alreadyAdded.add(p.id());
+            visited.add(p.id());
+          }
+        }
+        return acc;
+      }, new Array<Pixel>());
+
+      accumulator++;
+    }
   }
 
-  calculateDistances(): number[][] {
-    const distanceMatrix: number[][] = [];
+  calculateDistances(): Output {
+    const outputMap: number[][] = [];
 
-    for (let i = 0; i < this.map.length; i++) {
+    for (let row = 0; row < this.map.length; row++) {
       const distances: number[] = [];
-      for (let j = 0; j < this.map[i].length; j++) {
-        distances.push(this.nearestWhite(new Pixel(i, j, this.map[i][j])));
+      for (let col = 0; col < this.map[row].length; col++) {
+        distances.push(this.findNearestWhite(new Pixel(row, col, this.map[row][col])));
       }
-      distanceMatrix.push(distances);
+      outputMap.push(distances);
     }
 
-    return distanceMatrix;
+    return new Output(outputMap);
   }
 }
 
