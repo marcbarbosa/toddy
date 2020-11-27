@@ -2,26 +2,28 @@ import Bitmap from "./bitmap";
 
 class InputReader {
   async *read(): AsyncGenerator<Bitmap> {
-    for await (const input of process.stdin) {
-      const lines = input.toString().split('\n');
+    let buffer: Buffer = Buffer.from([]);
 
-      let numberOfTestCases = +lines.shift();
+    for await (const chunk of process.stdin) {
+      buffer += chunk;
+    }
 
-      while (numberOfTestCases--) {
-        let [rows] = lines.shift().split(' ');
-        const map: boolean[][] = [];
+    const lines = buffer.toString().split('\n');
 
-        while (rows--) {
-          map.push(
-            lines.shift().split('').map((p: string) => !!+p)
-          );
-        }
+    let numberOfTestCases = +lines.shift();
 
-        // remove empty line between test cases
-        lines.shift();
+    while (numberOfTestCases--) {
+      const map: boolean[][] = [];
 
-        yield new Bitmap(map);
+      let rows = +lines.shift().split(' ').shift();
+
+      while (rows--) {
+        map.push(lines.shift().split('').map((p: string) => !!+p));
       }
+      // remove empty line between test cases
+      lines.shift();
+
+      yield new Bitmap(map);
     }
   }
 }
