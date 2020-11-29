@@ -1,14 +1,20 @@
+import { Readable } from 'stream';
+
 import Bitmap from "./bitmap";
 
-class InputReader {
-  async *read(): AsyncGenerator<Bitmap> {
+class BitmapReader {
+  private async readAll(stream: Readable): Promise<string> {
     let buffer: Buffer = Buffer.from([]);
 
-    for await (const chunk of process.stdin) {
+    for await (const chunk of stream) {
       buffer += chunk;
     }
 
-    const lines = buffer.toString().split('\n');
+    return buffer.toString();
+  }
+
+  async *read(stream: Readable): AsyncGenerator<Bitmap> {
+    const lines = (await this.readAll(stream)).split('\n');
 
     let numberOfTestCases = +lines.shift();
 
@@ -28,4 +34,4 @@ class InputReader {
   }
 }
 
-export default InputReader;
+export default BitmapReader;
