@@ -5,11 +5,14 @@ class Output {
     this.map = map;
   }
 
-  toString() {
+  toString(): string {
+    let outputStr: string = '';
+
     for (const line of this.map) {
-      console.log(line.join(' '));
+      outputStr += `${line.join(' ')}\n`;
     }
-    console.log();
+
+    return outputStr;
   }
 }
 
