@@ -12,7 +12,7 @@ class Output {
       outputStr += `${line.join(' ')}\n`;
     }
 
-    return outputStr;
+    return outputStr + '\n';
   }
 }
 
