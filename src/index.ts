@@ -1,10 +1,10 @@
-import InputReader from "./input-reader";
+import BitmapReader from "./bitmap-reader";
 
 const main = async () => {
-  const inputReader = new InputReader();
+  const bitmapReader = new BitmapReader();
 
-  for await (const bitmap of inputReader.read()) {
-    bitmap.calculateDistances().toString();
+  for await (const bitmap of bitmapReader.read(process.stdin)) {
+    process.stdout.write(bitmap.calculateDistances().toString());
   }
 };
 
