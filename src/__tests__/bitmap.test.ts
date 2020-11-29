@@ -1,4 +1,4 @@
-import Bitmap from "../bitmap";
+import Bitmap from '../bitmap';
 
 describe('Bitmap', () => {
   describe('calculateDistances()', () => {

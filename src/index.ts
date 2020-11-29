@@ -1,4 +1,4 @@
-import BitmapReader from "./bitmap-reader";
+import BitmapReader from './bitmap-reader';
 
 const main = async () => {
   const bitmapReader = new BitmapReader();

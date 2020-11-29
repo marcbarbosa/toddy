@@ -1,5 +1,5 @@
-import Pixel from "./pixel";
-import Output from "./output";
+import Pixel from './pixel';
+import Output from './output';
 
 class Bitmap {
   private rows: number;

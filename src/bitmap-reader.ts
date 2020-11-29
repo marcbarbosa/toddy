@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
 
-import Bitmap from "./bitmap";
+import Bitmap from './bitmap';
 
 class BitmapReader {
   private async readAll(stream: Readable): Promise<string> {
