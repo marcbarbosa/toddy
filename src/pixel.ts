@@ -3,7 +3,7 @@ class Pixel {
   column: number;
   value: boolean;
 
-  constructor(row, column, value) {
+  constructor(row: number, column: number, value: boolean) {
     this.row = row;
     this.column = column;
     this.value = value;
